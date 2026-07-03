@@ -1,10 +1,11 @@
 :root{
-  --paper: #FAF6EE;
-  --paper-line: #E8E0CE;
-  --ink: #2B2A26;
-  --ink-faint: #8A8371;
-  --accent: #3D6E63;
-  --accent-soft: #E4EEE9;
+  --paper: #1E1C18;
+  --paper-line: #332F27;
+  --paper-raised: #262319;
+  --ink: #EDE7D8;
+  --ink-faint: #9C9484;
+  --accent: #6FAE96;
+  --accent-soft: #223330;
   --mono: ui-monospace, "SFMono-Regular", "JetBrains Mono", Menlo, Consolas, monospace;
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Helvetica, Arial, sans-serif;
 }
@@ -84,7 +85,7 @@ html,body{
   line-height:1.4;
 }
 .link-btn:hover{
-  filter:brightness(0.96);
+  filter:brightness(1.15);
 }
 textarea{
   flex:1;
@@ -126,12 +127,11 @@ textarea::placeholder{
   padding:0 20px 10px;
 }
 
-/* History page */
 /* History drawer */
 .history-overlay{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.35);
+  background:rgba(0,0,0,.6);
   z-index:9;
   opacity:0;
   pointer-events:none;
@@ -219,7 +219,7 @@ textarea::placeholder{
 pre.raw-text{
   margin:10px 0 0;
   padding:10px 12px;
-  background:#FFFDF8;
+  background:var(--paper-raised);
   border:1px solid var(--paper-line);
   border-radius:5px;
   font-family:var(--mono);
