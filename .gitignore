@@ -1,0 +1,9 @@
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.claude/
+
+# Superseded by index.html/app.js/storage.js/style.css — kept on disk for
+# reference, not part of the repo.
+calorie_notepad.html

@@ -1,0 +1,131 @@
+/*
+ * Storage layer for Tally.
+ *
+ * This is the ONLY file that touches localStorage. Everything else in the
+ * app (app.js, history.js) talks to the functions below, not to
+ * localStorage directly. That's intentional: today this persists to
+ * localStorage as JSON, but the storage could later be swapped for a real
+ * backend (a small SQLite-backed API, Supabase, Turso, etc.) by rewriting
+ * the internals of this file only — no UI code would need to change.
+ */
+(function () {
+  'use strict';
+
+  const CURRENT_KEY = 'tally:current';
+  const HISTORY_KEY = 'tally:history';
+
+  function readJSON(key, fallback) {
+    try {
+      const raw = localStorage.getItem(key);
+      if (!raw) return fallback;
+      const parsed = JSON.parse(raw);
+      return parsed == null ? fallback : parsed;
+    } catch (e) {
+      console.error('Storage read error for', key, e);
+      return fallback;
+    }
+  }
+
+  function writeJSON(key, value) {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+      return true;
+    } catch (e) {
+      console.error('Storage write error for', key, e);
+      return false;
+    }
+  }
+
+  function todayStr() {
+    const d = new Date();
+    const pad = n => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  }
+
+  function makeId() {
+    if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+    return 'id-' + Date.now() + '-' + Math.random().toString(16).slice(2);
+  }
+
+  function getCurrent() {
+    return readJSON(CURRENT_KEY, { rawText: '', entries: [] });
+  }
+
+  function getRawText() {
+    return getCurrent().rawText || '';
+  }
+
+  function getEntries() {
+    return getCurrent().entries || [];
+  }
+
+  // Replaces today's raw pad text + structured entries in one go. The
+  // notepad re-parses the whole textarea on every save, so this is the
+  // main write path for the current day.
+  function saveCurrent(rawText, entries) {
+    return writeJSON(CURRENT_KEY, { rawText: rawText || '', entries: entries || [] });
+  }
+
+  // Appends a single structured entry to the current day, filling in
+  // id/date/created_at if not supplied.
+  function addEntry(entry) {
+    const current = getCurrent();
+    const full = Object.assign({
+      id: makeId(),
+      date: todayStr(),
+      created_at: new Date().toISOString()
+    }, entry);
+    current.entries = current.entries || [];
+    current.entries.push(full);
+    writeJSON(CURRENT_KEY, current);
+    return full;
+  }
+
+  function getHistory() {
+    return readJSON(HISTORY_KEY, []);
+  }
+
+  // Archives the current day (raw text + entries + computed totals) into
+  // history, then clears the pad for a fresh day. Returns the archived
+  // record.
+  function archiveDay() {
+    const current = getCurrent();
+    const entries = current.entries || [];
+    const totals = entries.reduce((acc, e) => {
+      acc.calories += e.calories;
+      acc.protein += e.protein;
+      acc.count += 1;
+      return acc;
+    }, { calories: 0, protein: 0, count: 0 });
+
+    const record = {
+      // The archive date is "today" (when Start New Day is clicked), not
+      // necessarily each entry's own .date — if the pad is left open past
+      // midnight, entries still archive together under the day they're
+      // closed out on.
+      date: todayStr(),
+      rawText: current.rawText || '',
+      entries,
+      totals,
+      archived_at: new Date().toISOString()
+    };
+
+    const history = getHistory();
+    history.unshift(record);
+    writeJSON(HISTORY_KEY, history);
+    writeJSON(CURRENT_KEY, { rawText: '', entries: [] });
+
+    return record;
+  }
+
+  window.Storage = {
+    getRawText,
+    getEntries,
+    saveCurrent,
+    addEntry,
+    getHistory,
+    archiveDay,
+    todayStr,
+    makeId
+  };
+})();

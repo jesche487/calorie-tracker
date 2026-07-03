@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tally Notepad</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="totals">
+    <div class="metric">
+      <div class="label">Calories</div>
+      <div class="value" id="calTotal">0</div>
+    </div>
+    <div class="metric">
+      <div class="label">Protein</div>
+      <div class="value" id="proTotal">0<span class="unit">g</span></div>
+    </div>
+    <div class="totals-right">
+      <div class="count" id="lineCount">0 entries</div>
+      <div class="actions">
+        <a href="history.html" class="link-btn">History</a>
+        <button id="newDayBtn" class="link-btn" type="button">Start New Day</button>
+      </div>
+    </div>
+  </div>
+  <div class="hint">One entry per line — calories, protein, note (commas or spaces both work).</div>
+  <textarea id="pad" placeholder="100, 10&#10;200, 20&#10;300, 30 chicken breast" spellcheck="false"></textarea>
+</div>
+<div class="status" id="status">saved</div>
+
+<script src="storage.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
