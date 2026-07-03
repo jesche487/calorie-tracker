@@ -4,8 +4,8 @@
   --paper-raised: #262319;
   --ink: #EDE7D8;
   --ink-faint: #9C9484;
-  --accent: #6FAE96;
-  --accent-soft: #223330;
+  --accent: #FFFFFF;
+  --accent-soft: rgba(255, 255, 255, 0.1);
   --mono: ui-monospace, "SFMono-Regular", "JetBrains Mono", Menlo, Consolas, monospace;
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Helvetica, Arial, sans-serif;
 }
@@ -96,6 +96,10 @@ textarea{
   background:
     linear-gradient(var(--paper) 0px, var(--paper) 27px, var(--paper-line) 28px);
   background-size: 100% 28px;
+  /* Ruled lines are painted from the padding box's top edge, but text
+     starts padding-top (14px) lower — shift the pattern down to match
+     so the rule sits under the text baseline instead of through it. */
+  background-position: 0 14px;
   background-attachment:local;
   padding:14px 20px 40px;
   font-family:var(--mono);
