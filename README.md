@@ -23,16 +23,18 @@ after you stop typing.
 
 When you're done for the day, hit **Start New Day**. This archives today's
 entries (and their totals) into **History** and clears the pad for
-tomorrow. Nothing is ever deleted — the History page (`history.html`) lists
-every past day with its totals and the exact original text you typed.
+tomorrow. Nothing is ever deleted — click **History** to slide open a panel
+listing every past day; click a date to see the exact original text you
+typed that day (the saved snapshot from just before you hit Start New Day).
 
 ## Files
 
 - `index.html` / `app.js` — the notepad: parsing, live totals, save, and the
   Start New Day flow.
-- `history.html` / `history.js` — read-only view of archived days.
+- `history.js` — the slide-out History drawer (list of past days, and the
+  read-only view of a selected day's original text).
 - `storage.js` — the storage layer (see below).
-- `style.css` — shared styles for both pages.
+- `style.css` — shared styles.
 
 ## Storage architecture
 
@@ -49,7 +51,8 @@ never lost) are stored as JSON in `localStorage`.
 All persistence is intentionally isolated behind `storage.js`, which exposes
 a small function-based API — `getEntries()`, `addEntry()`, `saveCurrent()`,
 `archiveDay()`, `getHistory()`, etc. **No other file touches `localStorage`
-directly.** `app.js` and `history.js` only ever call into `storage.js`.
+directly.** `app.js` and `history.js` (the History drawer) only ever call
+into `storage.js`.
 
 This is deliberate: it's a personal, single-user app today, so localStorage
 is fine. But because the rest of the app only ever talks to `storage.js`'s

@@ -20,7 +20,7 @@
     <div class="totals-right">
       <div class="count" id="lineCount">0 entries</div>
       <div class="actions">
-        <a href="history.html" class="link-btn">History</a>
+        <button id="historyBtn" class="link-btn" type="button">History</button>
         <button id="newDayBtn" class="link-btn" type="button">Start New Day</button>
       </div>
     </div>
@@ -30,7 +30,25 @@
 </div>
 <div class="status" id="status">saved</div>
 
+<div id="historyOverlay" class="history-overlay"></div>
+<aside id="historyDrawer" class="history-drawer" aria-hidden="true">
+  <div class="drawer-header">
+    <h2>History</h2>
+    <button id="drawerClose" class="link-btn" type="button">Close</button>
+  </div>
+  <div class="drawer-body">
+    <div id="drawerList"></div>
+    <div id="drawerDetail" hidden>
+      <button id="drawerBack" class="drawer-back" type="button">&larr; All days</button>
+      <div class="day-date" id="drawerDetailDate"></div>
+      <div class="day-totals" id="drawerDetailTotals"></div>
+      <pre class="raw-text" id="drawerDetailText"></pre>
+    </div>
+  </div>
+</aside>
+
 <script src="storage.js"></script>
 <script src="app.js"></script>
+<script src="history.js"></script>
 </body>
 </html>
