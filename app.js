@@ -73,6 +73,12 @@
   const lineCountEl = document.getElementById('lineCount');
   const statusEl = document.getElementById('status');
   const newDayBtn = document.getElementById('newDayBtn');
+  const demoBanner = document.getElementById('demoBanner');
+
+  if (Storage.isDemo) {
+    demoBanner.hidden = false;
+    document.title = 'Tally Notepad — Demo';
+  }
 
   let saveTimer = null;
 

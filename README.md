@@ -61,6 +61,58 @@ later (a small SQLite-backed API, or a hosted DB like Supabase or Turso)
 only means rewriting the internals of `storage.js`. The UI code wouldn't
 need to change at all.
 
+## Hosting & demo mode
+
+**Where this runs:** day-to-day real logging happens at the GitHub Pages URL
+for this repo (`https://<username>.github.io/calorie-tracker/`, no custom
+domain). `localStorage` is scoped per browser origin (scheme + host + port —
+not per path), so *any* other page served under that same
+`<username>.github.io` host — including a personal portfolio site hosted as
+another GitHub Pages repo under the same account — technically shares that
+origin. In practice this is not a data-safety issue for visitors: `localStorage`
+never syncs across browsers or devices, so a portfolio visitor on their own
+machine can never see or affect real entries, and vice versa, regardless of
+origin. The one real edge case is the site owner opening a same-origin demo
+link in *their own* browser (e.g. during a live walkthrough) — without demo
+mode, that would just open the real, live app with real data.
+
+**Demo mode** exists to handle that case, and to give portfolio visitors a
+populated, realistic experience instead of a blank pad. Append `?demo=true`
+to the URL to enable it:
+
+```
+https://<username>.github.io/calorie-tracker/?demo=true
+```
+
+- **Isolation:** demo mode reads/writes entirely separate `localStorage`
+  keys (`tally:demo:current`, `tally:demo:history`) from real usage
+  (`tally:current`, `tally:history`). This is enforced once, at the top of
+  `storage.js` — there is no code path anywhere else in the app where demo
+  and real data can read or write the same key, even in the same browser.
+- **Seeded data:** the first time `?demo=true` is loaded in a browser, the
+  pad is pre-filled with a handful of sample entries and History gets two
+  sample archived days, so the notepad, live totals, and History drawer all
+  have something to show immediately. After that first seed, a demo
+  visitor's own typing and archived days persist normally across reloads
+  (same as real mode) — it only re-seeds when the demo keys are empty.
+- **Fully interactive:** typing, live totals, and Start New Day all work
+  identically to real mode — demo mode only changes which storage keys are
+  used underneath.
+- **Visibly marked as a demo:** a banner reading "Demo — sample data, not
+  connected to any real account" appears at the top of the page, and the
+  page title changes to "Tally Notepad — Demo", so it's never ambiguous
+  which mode you're in.
+
+**Linking from a personal site:** since visitor isolation is already
+guaranteed by the browser (different device = different `localStorage`, no
+matter the origin), a plain link is enough — no iframe needed:
+
+```html
+<a href="https://<username>.github.io/calorie-tracker/?demo=true" target="_blank" rel="noopener">
+  Try the live demo
+</a>
+```
+
 ## Future ideas
 
 - Once entries live in a real database, a **charts page** (e.g. using
