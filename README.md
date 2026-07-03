@@ -1,4 +1,4 @@
-# Tally — Calorie & Protein Notepad
+# Tracker — Calorie & Protein Notepad
 
 A tiny, single-user calorie/protein tracker that works like a notepad. No
 build step, no framework, no backend — open `index.html` in a browser
@@ -64,10 +64,10 @@ need to change at all.
 ## Hosting & demo mode
 
 **Where this runs:** day-to-day real logging happens at the GitHub Pages URL
-for this repo (`https://<username>.github.io/calorie-tracker/`, no custom
+for this repo (`https://jesche487.github.io/calorie-tracker/`, no custom
 domain). `localStorage` is scoped per browser origin (scheme + host + port —
 not per path), so *any* other page served under that same
-`<username>.github.io` host — including a personal portfolio site hosted as
+`jesche487.github.io` host — including a personal portfolio site hosted as
 another GitHub Pages repo under the same account — technically shares that
 origin. In practice this is not a data-safety issue for visitors: `localStorage`
 never syncs across browsers or devices, so a portfolio visitor on their own
@@ -81,7 +81,7 @@ populated, realistic experience instead of a blank pad. Append `?demo=true`
 to the URL to enable it:
 
 ```
-https://<username>.github.io/calorie-tracker/?demo=true
+https://jesche487.github.io/calorie-tracker/?demo=true
 ```
 
 - **Isolation:** demo mode reads/writes entirely separate `localStorage`
@@ -100,7 +100,7 @@ https://<username>.github.io/calorie-tracker/?demo=true
   used underneath.
 - **Visibly marked as a demo:** a banner reading "Demo — sample data, not
   connected to any real account" appears at the top of the page, and the
-  page title changes to "Tally Notepad — Demo", so it's never ambiguous
+  page title changes to "Tracker — Demo", so it's never ambiguous
   which mode you're in.
 
 **Linking from a personal site:** since visitor isolation is already
@@ -108,7 +108,7 @@ guaranteed by the browser (different device = different `localStorage`, no
 matter the origin), a plain link is enough — no iframe needed:
 
 ```html
-<a href="https://<username>.github.io/calorie-tracker/?demo=true" target="_blank" rel="noopener">
+<a href="https://jesche487.github.io/calorie-tracker/?demo=true" target="_blank" rel="noopener">
   Try the live demo
 </a>
 ```

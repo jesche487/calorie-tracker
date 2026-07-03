@@ -1,5 +1,5 @@
 /*
- * Storage layer for Tally.
+ * Storage layer for Tracker.
  *
  * This is the ONLY file that touches localStorage. Everything else in the
  * app (app.js, history.js) talks to the functions below, not to

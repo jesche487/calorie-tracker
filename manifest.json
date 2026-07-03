@@ -1,6 +1,6 @@
 {
-  "name": "Tally — Calorie & Protein Notepad",
-  "short_name": "Tally",
+  "name": "Tracker",
+  "short_name": "Tracker",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

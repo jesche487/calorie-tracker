@@ -77,7 +77,7 @@
 
   if (Storage.isDemo) {
     demoBanner.hidden = false;
-    document.title = 'Tally Notepad — Demo';
+    document.title = 'Tracker — Demo';
   }
 
   let saveTimer = null;
